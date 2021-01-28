@@ -116,14 +116,16 @@ public final class SharableCollector<T, U, A, R, RR> implements Collector<T, A, 
 
     @Override
     public Function<A, RR> finisher() {
-        // Lazy create finisher, so can pre-chain protection when andThenR's differ in later columns.
+        // Lazy build finisher, so can pre-chain protection when andThenR differs in later columns.
         if (null == finisher)
-            createFinisher();
+            buildFinisher();
+
         return finisher;
     }
 
-    private void createFinisher() {
+    private void buildFinisher() {
         Function<A, R> finisherA2R = (Function<A, R>) collectorR.finisher();
+
         if (!sameAndThenR)
             finisherA2R = finisherA2R.andThen(r -> {
                 if (r instanceof List)
@@ -132,13 +134,15 @@ public final class SharableCollector<T, U, A, R, RR> implements Collector<T, A, 
                     r = (R) Collections.unmodifiableMap((Map<?, ?>) r);
                 else if (r instanceof Set) // May not be useful
                     r = (R) Collections.unmodifiableSet((Set<?>) r);
-                this.r = r;
-                return r;
+                return this.r = r; // save r in this.r and return r
             });
+
         if (!isIdentityFunction(finisherA2R))
             finisherA2R = finisherA2R.andThen(andThenR);
+
         if (sameAndThenR)
-            finisherA2R = finisherA2R.andThen(r -> this.r = r); // andThenR The same in shared ones, so re-share.
+            finisherA2R = finisherA2R.andThen(r -> this.r = r); // r not saved in this.r yet, so save next.
+
         this.finisher = finisherA2R.andThen(andThenRR);
     }
 
