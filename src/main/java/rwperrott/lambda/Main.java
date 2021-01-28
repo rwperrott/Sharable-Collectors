@@ -2,12 +2,12 @@ package rwperrott.lambda;
 
 import org.jooq.lambda.Agg;
 import org.jooq.lambda.Seq;
-import org.jooq.lambda.tuple.*;
+import org.jooq.lambda.tuple.Tuple;
+import org.jooq.lambda.tuple.Tuple2;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -46,11 +46,11 @@ public class Main {
         final String header = "percentile -> |  Agg | floor | halfUp | interpolate | ceil";
         System.out.println(header);
         for (double p = 0d; p <= 1.00d; p += 0.05d) {
-            final SharableCollector<Double, Double, ?, List<Double>, Optional<Double>> col =
+            var col =
                     SharableCollector.of(Collectors.toList(),
                                          andThenR,
                                          Finishers.percentile(p, PercentileFunction.floor()));
-            final Tuple5<Optional<Double>, Optional<Double>, Optional<Double>, Optional<Double>, Optional<Double>> r =
+            var r =
                     Seq.of(values)
                        .collect(Tuple.collectors(
                                Agg.<Double>percentile(p, Comparator.naturalOrder()),
@@ -79,9 +79,8 @@ public class Main {
         final String header = "percentile -> |  Agg | floor | halfUp | interpolate | ceil";
         System.out.println(header);
         for (double p = 0d; p <= 1.00d; p += 0.05d) {
-            final SharableCollector.IdMap idMap = new SharableCollector.IdMap();
-            final Tuple5<Optional<Double>, Optional<Double>, Optional<Double>, Optional<Double>, Optional<Double>> r =
-                    Seq.of(values)
+            var idMap = new SharableCollector.IdMap();
+            var r = Seq.of(values)
                        .collect(Tuple.collectors(
                                Agg.<Double>percentile(p, Comparator.naturalOrder()),
                                idMap.share("A", Collectors.toList(), andThenR, Finishers.percentile(p, PercentileFunction.floor())),
@@ -111,12 +110,9 @@ public class Main {
         final String header = "percentile -> | Agg             | floor           | halfUp          | ceil";
         System.out.println(header);
         for (double p = 0d; p <= 1.00d; p += 0.05d) {
-            final SharableCollector<Tuple2<String, Double>, Tuple2<String, Double>, Object, List<Tuple2<String, Double>>, Optional<Tuple2<String, Double>>> col =
+            var col =
                     SharableCollector.of(Collectors.toList(), andThenR, Finishers.percentile(p, PercentileFunction.floor()));
-            final Tuple4<Optional<Tuple2<String, Double>>,
-                    Optional<Tuple2<String, Double>>,
-                    Optional<Tuple2<String, Double>>,
-                    Optional<Tuple2<String, Double>>> r =
+            var r =
                     Seq.seq(namedValues)
                        .collect(Tuple.collectors(
                                Agg.percentileBy(p, keyExtractor),
@@ -146,11 +142,8 @@ public class Main {
         final String header = "percentile -> | Agg             | floor           | halfUp          | ceil";
         System.out.println(header);
         for (double p = 0d; p <= 1.00d; p += 0.05d) {
-            final SharableCollector.IdMap idMap = new SharableCollector.IdMap();
-            final Tuple4<Optional<Tuple2<String, Double>>,
-                    Optional<Tuple2<String, Double>>,
-                    Optional<Tuple2<String, Double>>,
-                    Optional<Tuple2<String, Double>>> r =
+            var idMap = new SharableCollector.IdMap();
+            var r =
                     Seq.seq(namedValues)
                        .collect(Tuple.collectors(
                                Agg.percentileBy(p, keyExtractor),
