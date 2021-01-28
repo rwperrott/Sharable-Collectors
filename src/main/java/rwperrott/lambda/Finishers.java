@@ -27,7 +27,7 @@ public final class Finishers {
         }
     }
 
-    private static final UnaryOperator<? extends List<?>> NATURAL_SORT_LIST = createSortList(Comparator.naturalOrder());
+    private static final UnaryOperator<? extends List<?>> NATURAL_LIST_SORTER = createSortList(Comparator.naturalOrder());
     private static final Map<ListSortKey<?, ?>, UnaryOperator<?>> LIST_SORTERS = new ConcurrentHashMap<>();
 
     public static <T, U> UnaryOperator<List<T>> sortList(final Function<? super T, ? extends U> keyExtractor,
@@ -49,7 +49,7 @@ public final class Finishers {
     @SuppressWarnings("unchecked")
     private static <T, U> UnaryOperator<List<T>> sortList0(ListSortKey<T, U> key) {
         if (Objects.equals(ListSortKey.NATURAL, key))
-            return (UnaryOperator<List<T>>)NATURAL_SORT_LIST;
+            return (UnaryOperator<List<T>>) NATURAL_LIST_SORTER;
         return (UnaryOperator<List<T>>) LIST_SORTERS.computeIfAbsent(key, k -> {
             final Comparator<? super T> comp = key.v1 == Function.identity()
                                                ? (Comparator<? super T>) key.v2
@@ -62,9 +62,8 @@ public final class Finishers {
         return (List<T> l) -> {
             final int size = l.size();
             if (size > 1) { // Only sort if 2 or more items.
-                try { // Main if modifiable
-                    final T last = l.remove(size - 1);
-                    l.add(last);
+                try { // Test if modifiable
+                    l.set(0,l.get(0));
                 } catch (Exception e) { // Unmodifiable, so copy.
                     l = new ArrayList<>(l);
                 }
@@ -85,7 +84,7 @@ public final class Finishers {
 
     @SuppressWarnings("unchecked")
     public static <T extends Comparable<? super T>> UnaryOperator<List<T>> sortList() {
-        return (UnaryOperator<List<T>>)NATURAL_SORT_LIST;
+        return (UnaryOperator<List<T>>) NATURAL_LIST_SORTER;
     }
 
     /**
