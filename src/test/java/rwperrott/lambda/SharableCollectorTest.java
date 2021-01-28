@@ -1,9 +1,13 @@
 package rwperrott.lambda;
 
+import static org.jooq.lambda.tuple.Tuple.tuple;
+import static org.testng.Assert.*;
+
 import org.jooq.lambda.Agg;
 import org.jooq.lambda.Seq;
 import org.jooq.lambda.tuple.Tuple;
 import org.jooq.lambda.tuple.Tuple2;
+import org.testng.annotations.*;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -12,9 +16,7 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
-import static org.jooq.lambda.tuple.Tuple.tuple;
-
-public class Main {
+public class SharableCollectorTest {
     static final Double[] values = {0d, 10d, 20d, 30d, 40d, 50d, 60d, 70d, 80d, 90d};
 
     static final List<Tuple2<String, Double>> namedValues = Arrays.asList(
@@ -29,14 +31,8 @@ public class Main {
             tuple("Eighty ", 80d),
             tuple("Ninety ", 90d));
 
-    public static void main(String[] args) {
-        collectForTest();
-        collectForIdTest();
-        collectByTest();
-        collectByIdTest();
-    }
-
-    private static void collectForTest() {
+    @Test
+    public void collectForTest() {
         System.out.println();
         System.out.println("collectForTest");
 
@@ -70,7 +66,8 @@ public class Main {
         System.out.println(header);
     }
 
-    private static void collectForIdTest() {
+    @Test
+    public void collectForIdTest() {
         System.out.println();
         System.out.println("collectForIdTest");
         // Defined separately so that SharableCollector can eliminate redundant code for dependent columns.
@@ -99,7 +96,8 @@ public class Main {
         System.out.println(header);
     }
 
-    private static void collectByTest() {
+    @Test
+    public void collectByTest() {
         System.out.println();
         System.out.println("collectByTest");
 
@@ -130,7 +128,8 @@ public class Main {
         System.out.println(header);
     }
 
-    private static void collectByIdTest() {
+    @Test
+    public void collectByIdTest() {
         System.out.println();
         System.out.println("collectByIdTest");
 
@@ -160,5 +159,4 @@ public class Main {
         }
         System.out.println(header);
     }
-
 }
