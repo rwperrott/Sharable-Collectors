@@ -1,2 +1,2 @@
 # Sharable-Collectors
-My idea on how to share collector results
+My ideas on how to share collector results
