@@ -91,7 +91,7 @@ public final class Finishers {
     /**
      * Builds a function which accepts a sorted list and returns the percentile result.
      *
-     * Usable for both simple and keyExtracted results!
+     * Usable for both simple and keyExtracted results.
      *
      * @param percentile 0 to 1.0
      * @param percentileFunction function to resolve indexFraction

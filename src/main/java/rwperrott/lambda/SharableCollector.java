@@ -183,13 +183,14 @@ public final class SharableCollector<T, U, A, R, RR> implements Collector<T, A, 
                                                        final Collector<U, ?, R> collectorR,
                                                        final UnaryOperator<R> andThenR,
                                                        final Function<R, RR> andThenRR) {
-            // Only need to validate values here because everything it calls is private.
             if (Objects.requireNonNull(id, "id").length() == 0)
                 throw new IllegalStateException("Blank id");
             final SharableCollector<T, U, ?, R, RR> sc = (SharableCollector<T, U, ?, R, RR>) map
                     .computeIfAbsent(id, k -> SharableCollector.of(mapper, collectorR, andThenR, andThenRR));
             if (sc.isNew())
                 return sc;
+
+            // Validation to try and spot breaking reference/type conflicts for share calls for of id
             if (mapper != sc.mapper)
                 throw new IllegalArgumentException(format("mapper %s not %s",
                                                           mapper, sc.mapper));
