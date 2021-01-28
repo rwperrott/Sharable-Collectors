@@ -59,7 +59,7 @@ public final class Finishers {
     }
 
     private static <T> UnaryOperator<List<T>> createSortList(final Comparator<? super T> comp) {
-        return (List<T> l) -> {
+        return l -> {
             final int size = l.size();
             if (size > 1) { // Only sort if 2 or more items.
                 try { // Test if modifiable
@@ -99,7 +99,7 @@ public final class Finishers {
      */
     public static <T> Function<List<T>, Optional<T>>
     percentile(double percentile, PercentileFunction<T> percentileFunction) {
-        return (l) -> {
+        return l -> {
             final int size = l.size();
 
             if (size == 0)
