@@ -108,7 +108,6 @@ public class Main {
         final Function<Tuple2<String, Double>, Double> keyExtractor = t -> t.v2;
         // Defined separately so that SharableCollector can eliminate redundant code for dependent columns.
         final UnaryOperator<List<Tuple2<String, Double>>> andThenR = Finishers.sortList(keyExtractor);
-
         final String header = "percentile -> | Agg             | floor           | halfUp          | ceil";
         System.out.println(header);
         for (double p = 0d; p <= 1.00d; p += 0.05d) {

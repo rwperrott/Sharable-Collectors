@@ -10,6 +10,8 @@ import static java.lang.String.format;
  * Handles both pre and post mapping.
  * <p>
  * I did attempt to validate by Class<T>, however that didn't work for objects with erased types like Tuple*!
+ * <p>
+ * It maybe possible to reuse SharableCollector and share collector instances, but not concurrently.
  *
  * @param <T>  source value type
  * @param <U>  accumulated value type
