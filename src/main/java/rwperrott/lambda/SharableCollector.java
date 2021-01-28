@@ -148,7 +148,7 @@ public final class SharableCollector<T, U, A, R, RR> implements Collector<T, A, 
     }
 
     /**
-     * Holds a map of SharableCollectors by Id.
+     * Holds a map of Main by Id.
      * <p>
      * Should only be used for one Stream or Seq. e.g. maybe a good idea to use a different instance for a Window.
      * <p>

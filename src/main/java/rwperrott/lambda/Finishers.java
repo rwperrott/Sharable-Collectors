@@ -62,7 +62,7 @@ public final class Finishers {
         return (List<T> l) -> {
             final int size = l.size();
             if (size > 1) { // Only sort if 2 or more items.
-                try { // Test if modifiable
+                try { // Main if modifiable
                     final T last = l.remove(size - 1);
                     l.add(last);
                 } catch (Exception e) { // Unmodifiable, so copy.

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import static org.jooq.lambda.tuple.Tuple.tuple;
 
-public class SeqTest {
+public class Main {
     static final Double[] values = {0d, 10d, 20d, 30d, 40d, 50d, 60d, 70d, 80d, 90d};
 
     static final List<Tuple2<String, Double>> namedValues = Arrays.asList(
